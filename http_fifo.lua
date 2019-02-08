@@ -2,15 +2,11 @@ http_fifo = {
 	fifo = {}
 }
 
-function tprint(t)
-	for k,v in pairs(t) do print(k,v) end
-end
-
 http_fifo.get = function (url, headers, cb)
 	local wrapper_get = function ()
 		http.get(url, headers, function( ... )
-			cb( ... )
-			http_fifo.next()
+				cb( ... )
+				http_fifo.next()
 		end)
 	end
 	table.insert(http_fifo.fifo, wrapper_get)
